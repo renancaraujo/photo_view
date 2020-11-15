@@ -15,7 +15,7 @@ import 'package:photo_view/src/core/photo_view_gesture_detector.dart';
 import 'package:photo_view/src/photo_view_scale_state.dart';
 import 'package:photo_view/src/utils/photo_view_hero_attributes.dart';
 
-/// A type definition for a [Function] that receives a index after a page change in [PhotoViewGallery]
+//// A type definition for a [Function] that receives a index after a page change in [PhotoViewGallery]
 typedef PhotoViewGalleryPageChangedCallback = void Function(int index);
 
 /// A type definition for a [Function] that defines a page in [PhotoViewGallery.build]
@@ -111,6 +111,7 @@ class PhotoViewGallery extends StatefulWidget {
     this.onPageChanged,
     this.scaleStateChangedCallback,
     this.enableRotation = false,
+    this.enableMoveOnMinScale = false,
     this.scrollPhysics,
     this.scrollDirection = Axis.horizontal,
     this.customSize,
@@ -135,6 +136,7 @@ class PhotoViewGallery extends StatefulWidget {
     this.onPageChanged,
     this.scaleStateChangedCallback,
     this.enableRotation = false,
+    this.enableMoveOnMinScale = false,
     this.scrollPhysics,
     this.scrollDirection = Axis.horizontal,
     this.customSize,
@@ -181,6 +183,9 @@ class PhotoViewGallery extends StatefulWidget {
 
   /// Mirror to [PhotoView.enableRotation]
   final bool enableRotation;
+
+  /// Mirror to [PhotoView.enableMoveOnMinScale]
+  final bool enableMoveOnMinScale;
 
   /// Mirror to [PhotoView.customSize]
   final Size customSize;
@@ -255,6 +260,8 @@ class _PhotoViewGalleryState extends State<PhotoViewGallery> {
             heroAttributes: pageOption.heroAttributes,
             scaleStateChangedCallback: scaleStateChangedCallback,
             enableRotation: widget.enableRotation,
+            enableMoveOnMinScale: widget.enableMoveOnMinScale,
+            enableDoubleTap: pageOption.enableDoubleTap,
             initialScale: pageOption.initialScale,
             minScale: pageOption.minScale,
             maxScale: pageOption.maxScale,
@@ -280,6 +287,8 @@ class _PhotoViewGalleryState extends State<PhotoViewGallery> {
             heroAttributes: pageOption.heroAttributes,
             scaleStateChangedCallback: scaleStateChangedCallback,
             enableRotation: widget.enableRotation,
+            enableMoveOnMinScale: widget.enableMoveOnMinScale,
+            enableDoubleTap: pageOption.enableDoubleTap,
             initialScale: pageOption.initialScale,
             minScale: pageOption.minScale,
             maxScale: pageOption.maxScale,
@@ -329,6 +338,7 @@ class PhotoViewGalleryPageOptions {
     this.tightMode,
     this.filterQuality,
     this.disableGestures,
+    this.enableDoubleTap,
   })  : child = null,
         childSize = null,
         assert(imageProvider != null);
@@ -350,6 +360,7 @@ class PhotoViewGalleryPageOptions {
     this.tightMode,
     this.filterQuality,
     this.disableGestures,
+    this.enableDoubleTap,
   })  : imageProvider = null,
         assert(child != null);
 
@@ -400,6 +411,9 @@ class PhotoViewGalleryPageOptions {
 
   /// Mirror to [PhotoView.disableGestures]
   final bool disableGestures;
+
+  /// Mirror to [PhotoView.enableDoubleTap]
+  final bool enableDoubleTap;
 
   /// Quality levels for image filters.
   final FilterQuality filterQuality;

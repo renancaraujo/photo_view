@@ -242,6 +242,8 @@ class PhotoView extends StatefulWidget {
     this.heroAttributes,
     this.scaleStateChangedCallback,
     this.enableRotation = false,
+    this.enableMoveOnMinScale = false,
+    this.enableDoubleTap,
     this.controller,
     this.scaleStateController,
     this.maxScale,
@@ -275,6 +277,8 @@ class PhotoView extends StatefulWidget {
     this.heroAttributes,
     this.scaleStateChangedCallback,
     this.enableRotation = false,
+    this.enableMoveOnMinScale = false,
+    this.enableDoubleTap,
     this.controller,
     this.scaleStateController,
     this.maxScale,
@@ -332,6 +336,12 @@ class PhotoView extends StatefulWidget {
 
   /// A flag that enables the rotation gesture support
   final bool enableRotation;
+
+  /// A flag that enables the move on minScale
+  final bool enableMoveOnMinScale;
+
+  /// A flag that enables the double tap
+  final bool enableDoubleTap;
 
   /// The specified custom child to be shown instead of a image
   final Widget child;
@@ -488,6 +498,8 @@ class _PhotoViewState extends State<PhotoView> {
                 heroAttributes: widget.heroAttributes,
                 scaleStateChangedCallback: widget.scaleStateChangedCallback,
                 enableRotation: widget.enableRotation,
+                enableMoveOnMinScale: widget.enableMoveOnMinScale,
+                enableDoubleTap: widget.enableDoubleTap,
                 controller: _controller,
                 scaleStateController: _scaleStateController,
                 maxScale: widget.maxScale,
@@ -512,6 +524,8 @@ class _PhotoViewState extends State<PhotoView> {
                 heroAttributes: widget.heroAttributes,
                 scaleStateChangedCallback: widget.scaleStateChangedCallback,
                 enableRotation: widget.enableRotation,
+                enableMoveOnMinScale: widget.enableMoveOnMinScale,
+                enableDoubleTap: widget.enableDoubleTap,
                 controller: _controller,
                 scaleStateController: _scaleStateController,
                 maxScale: widget.maxScale,

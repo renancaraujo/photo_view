@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
+import 'only_one_pointer_recognizer.dart';
 import 'photo_view_hit_corners.dart';
 
 class PhotoViewGestureDetector extends StatelessWidget {
@@ -80,7 +81,7 @@ class PhotoViewGestureDetector extends StatelessWidget {
   }
 }
 
-class PhotoViewGestureRecognizer extends ScaleGestureRecognizer {
+class PhotoViewGestureRecognizer extends OnlyOnePointerRecognizer {
   PhotoViewGestureRecognizer({
     this.hitDetector,
     Object debugOwner,

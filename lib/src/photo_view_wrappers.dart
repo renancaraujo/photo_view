@@ -16,6 +16,8 @@ class ImageWrapper extends StatefulWidget {
     this.heroAttributes,
     this.scaleStateChangedCallback,
     this.enableRotation = false,
+    this.enableMoveOnMinScale = false,
+    this.enableDoubleTap,
     this.controller,
     this.scaleStateController,
     this.maxScale,
@@ -42,6 +44,7 @@ class ImageWrapper extends StatefulWidget {
   final PhotoViewHeroAttributes heroAttributes;
   final ValueChanged<PhotoViewScaleState> scaleStateChangedCallback;
   final bool enableRotation;
+  final bool enableMoveOnMinScale;
   final dynamic maxScale;
   final dynamic minScale;
   final dynamic initialScale;
@@ -58,6 +61,7 @@ class ImageWrapper extends StatefulWidget {
   final bool tightMode;
   final FilterQuality filterQuality;
   final bool disableGestures;
+  final bool enableDoubleTap;
 
   @override
   _ImageWrapperState createState() => _ImageWrapperState();
@@ -157,6 +161,7 @@ class _ImageWrapperState extends State<ImageWrapper> {
       backgroundDecoration: widget.backgroundDecoration,
       gaplessPlayback: widget.gaplessPlayback,
       enableRotation: widget.enableRotation,
+      enableMoveOnMinScale: widget.enableMoveOnMinScale,
       heroAttributes: widget.heroAttributes,
       basePosition: widget.basePosition ?? Alignment.center,
       controller: widget.controller,
@@ -169,6 +174,7 @@ class _ImageWrapperState extends State<ImageWrapper> {
       tightMode: widget.tightMode ?? false,
       filterQuality: widget.filterQuality ?? FilterQuality.none,
       disableGestures: widget.disableGestures ?? false,
+      enableDoubleTap: widget.enableDoubleTap ?? true,
     );
   }
 
@@ -204,6 +210,7 @@ class CustomChildWrapper extends StatefulWidget {
     this.heroAttributes,
     this.scaleStateChangedCallback,
     this.enableRotation,
+    this.enableMoveOnMinScale,
     this.controller,
     this.scaleStateController,
     this.maxScale,
@@ -218,6 +225,7 @@ class CustomChildWrapper extends StatefulWidget {
     this.tightMode,
     this.filterQuality,
     this.disableGestures,
+    this.enableDoubleTap,
   }) : super(key: key);
 
   final Widget child;
@@ -226,6 +234,7 @@ class CustomChildWrapper extends StatefulWidget {
   final PhotoViewHeroAttributes heroAttributes;
   final ValueChanged<PhotoViewScaleState> scaleStateChangedCallback;
   final bool enableRotation;
+  final bool enableMoveOnMinScale;
 
   final PhotoViewControllerBase controller;
   final PhotoViewScaleStateController scaleStateController;
@@ -243,6 +252,7 @@ class CustomChildWrapper extends StatefulWidget {
   final bool tightMode;
   final FilterQuality filterQuality;
   final bool disableGestures;
+  final bool enableDoubleTap;
 
   @override
   _CustomChildWrapperState createState() => _CustomChildWrapperState();
@@ -263,6 +273,7 @@ class _CustomChildWrapperState extends State<CustomChildWrapper> {
       customChild: widget.child,
       backgroundDecoration: widget.backgroundDecoration,
       enableRotation: widget.enableRotation,
+      enableMoveOnMinScale: widget.enableMoveOnMinScale,
       heroAttributes: widget.heroAttributes,
       controller: widget.controller,
       scaleStateController: widget.scaleStateController,
@@ -275,6 +286,7 @@ class _CustomChildWrapperState extends State<CustomChildWrapper> {
       tightMode: widget.tightMode ?? false,
       filterQuality: widget.filterQuality ?? FilterQuality.none,
       disableGestures: widget.disableGestures ?? false,
+      enableDoubleTap: widget.enableDoubleTap ?? true,
     );
   }
 }

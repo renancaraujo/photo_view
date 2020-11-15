@@ -194,12 +194,20 @@ mixin PhotoViewControllerDelegate on State<PhotoViewCore> {
     if (screenWidth < computedWidth) {
       final cornersX = this.cornersX(scale: _scale);
       finalX = _position.dx.clamp(cornersX.min, cornersX.max);
+    } else {
+      if (widget.enableMoveOnMinScale) {
+        finalX = _position.dx;
+      }
     }
 
     double finalY = 0.0;
     if (screenHeight < computedHeight) {
       final cornersY = this.cornersY(scale: _scale);
       finalY = _position.dy.clamp(cornersY.min, cornersY.max);
+    } else {
+      if (widget.enableMoveOnMinScale) {
+        finalY = _position.dy;
+      }
     }
 
     return Offset(finalX, finalY);
