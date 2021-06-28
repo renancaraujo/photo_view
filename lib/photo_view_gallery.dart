@@ -115,6 +115,9 @@ class PhotoViewGallery extends StatefulWidget {
     this.scrollPhysics,
     this.scrollDirection = Axis.horizontal,
     this.customSize,
+    this.borderFlex = 0,
+    this.photoViewFlex = 100,
+    this.borderDecoration,
   })  : itemCount = null,
         builder = null,
         super(key: key);
@@ -137,6 +140,9 @@ class PhotoViewGallery extends StatefulWidget {
     this.scrollPhysics,
     this.scrollDirection = Axis.horizontal,
     this.customSize,
+    this.borderFlex = 0,
+    this.photoViewFlex = 100,
+    this.borderDecoration,
   })  : pageOptions = null,
         assert(itemCount != null),
         assert(builder != null),
@@ -184,6 +190,14 @@ class PhotoViewGallery extends StatefulWidget {
   /// The axis along which the [PageView] scrolls. Mirror to [PageView.scrollDirection]
   final Axis scrollDirection;
 
+  /// The borderFlex means the flex in the two borders, which is used in PageController viewportFraction
+  /// PageController viewportFraction = (borderFlex + photoViewFlex + borderFlex) / 100
+  final int borderFlex;
+  final int photoViewFlex;
+
+  /// An Object to draw ViewPortFraction two borders background, if it's null, then default to backgroundDecoration
+  final BoxDecoration? borderDecoration;
+
   bool get _isBuilder => builder != null;
 
   @override
@@ -193,8 +207,11 @@ class PhotoViewGallery extends StatefulWidget {
 }
 
 class _PhotoViewGalleryState extends State<PhotoViewGallery> {
-  late final PageController _controller =
-      widget.pageController ?? PageController();
+  late final PageController _controller = widget.pageController ??
+      PageController(
+          viewportFraction:
+              (widget.borderFlex + widget.photoViewFlex + widget.borderFlex) /
+                  100);
 
   void scaleStateChangedCallback(PhotoViewScaleState scaleState) {
     if (widget.scaleStateChangedCallback != null) {
@@ -286,9 +303,28 @@ class _PhotoViewGalleryState extends State<PhotoViewGallery> {
             errorBuilder: pageOption.errorBuilder,
           );
 
-    return ClipRect(
-      child: photoView,
-    );
+    final List<Widget> children = [
+      borderWidget(),
+      Expanded(
+        flex: widget.photoViewFlex,
+        child: ClipRect(
+          child: photoView,
+        ),
+      ),
+      borderWidget()
+    ];
+
+    return widget.scrollDirection == Axis.horizontal
+        ? Row(children: children)
+        : Column(children: children);
+  }
+
+  Widget borderWidget() {
+    return Expanded(
+        flex: widget.borderFlex,
+        child: Container(
+          decoration: widget.borderDecoration ?? widget.backgroundDecoration,
+        ));
   }
 
   PhotoViewGalleryPageOptions _buildPageOption(

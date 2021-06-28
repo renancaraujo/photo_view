@@ -42,7 +42,7 @@ class PhotoViewCore extends StatefulWidget {
     required this.filterQuality,
     required this.disableGestures,
     required this.enablePanAlways,
-  })   : customChild = null,
+  })  : customChild = null,
         super(key: key);
 
   const PhotoViewCore.customChild({
@@ -64,7 +64,7 @@ class PhotoViewCore extends StatefulWidget {
     required this.filterQuality,
     required this.disableGestures,
     required this.enablePanAlways,
-  })   : imageProvider = null,
+  })  : imageProvider = null,
         gaplessPlayback = false,
         super(key: key);
 
@@ -106,6 +106,9 @@ class PhotoViewCoreState extends State<PhotoViewCore>
         PhotoViewControllerDelegate,
         HitCornersDetector {
   Offset? _normalizedPosition;
+  Offset? _lastPosition;
+  double? _lastScale;
+
   double? _scaleBefore;
   double? _rotationBefore;
 
@@ -142,7 +145,9 @@ class PhotoViewCoreState extends State<PhotoViewCore>
   void onScaleStart(ScaleStartDetails details) {
     _rotationBefore = controller.rotation;
     _scaleBefore = scale;
+    _lastScale = scale;
     _normalizedPosition = details.focalPoint - controller.position;
+    _lastPosition = details.focalPoint;
     _scaleAnimationController.stop();
     _positionAnimationController.stop();
     _rotationAnimationController.stop();
@@ -150,15 +155,24 @@ class PhotoViewCoreState extends State<PhotoViewCore>
 
   void onScaleUpdate(ScaleUpdateDetails details) {
     final double newScale = _scaleBefore! * details.scale;
-    final Offset delta = details.focalPoint - _normalizedPosition!;
+
+    final Offset screenCenter = MediaQuery.of(context).size.center(Offset.zero);
+    final Offset scaleCenter = details.focalPoint;
+    final Offset centerDelta = scaleCenter - screenCenter;
+
+    final Offset delta = details.focalPoint - _lastPosition! + position;
+    final Offset scaleDelta =
+        centerDelta + (delta - centerDelta) * newScale / _lastScale!;
+    _lastScale = newScale;
+    _lastPosition = details.focalPoint;
 
     updateScaleStateFromNewScale(newScale);
 
     updateMultiple(
       scale: newScale,
       position: widget.enablePanAlways
-          ? delta
-          : clampPosition(position: delta * details.scale),
+          ? scaleDelta
+          : clampPosition(position: scaleDelta),
       rotation:
           widget.enableRotation ? _rotationBefore! + details.rotation : null,
       rotationFocusPoint: widget.enableRotation ? details.focalPoint : null,

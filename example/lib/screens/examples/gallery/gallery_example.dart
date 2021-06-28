@@ -12,7 +12,7 @@ class GalleryExample extends StatefulWidget {
 
 class _GalleryExampleState extends State<GalleryExample> {
   bool verticalGallery = false;
-
+  bool borderFlex = false;
   @override
   Widget build(BuildContext context) {
     return ExampleAppBarLayout(
@@ -59,6 +59,20 @@ class _GalleryExampleState extends State<GalleryExample> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text("PageView borderFlex = 5"),
+                Checkbox(
+                  value: borderFlex,
+                  onChanged: (value) {
+                    setState(() {
+                      borderFlex = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -75,6 +89,7 @@ class _GalleryExampleState extends State<GalleryExample> {
             color: Colors.black,
           ),
           initialIndex: index,
+          borderFlex: borderFlex ? 5 : 0,
           scrollDirection: verticalGallery ? Axis.vertical : Axis.horizontal,
         ),
       ),
@@ -89,9 +104,13 @@ class GalleryPhotoViewWrapper extends StatefulWidget {
     this.minScale,
     this.maxScale,
     this.initialIndex = 0,
+    this.borderFlex = 0,
+    this.photoViewFlex = 100,
     required this.galleryItems,
     this.scrollDirection = Axis.horizontal,
-  }) : pageController = PageController(initialPage: initialIndex);
+  }) : pageController = PageController(
+            initialPage: initialIndex,
+            viewportFraction: (borderFlex + photoViewFlex + borderFlex) / 100);
 
   final LoadingBuilder? loadingBuilder;
   final BoxDecoration? backgroundDecoration;
@@ -101,6 +120,8 @@ class GalleryPhotoViewWrapper extends StatefulWidget {
   final PageController pageController;
   final List<GalleryExampleItem> galleryItems;
   final Axis scrollDirection;
+  final int borderFlex;
+  final int photoViewFlex;
 
   @override
   State<StatefulWidget> createState() {
@@ -137,6 +158,8 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               pageController: widget.pageController,
               onPageChanged: onPageChanged,
               scrollDirection: widget.scrollDirection,
+              borderFlex: widget.borderFlex,
+              photoViewFlex: widget.photoViewFlex,
             ),
             Container(
               padding: const EdgeInsets.all(20.0),
